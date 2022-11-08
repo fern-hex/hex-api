@@ -1,0 +1,122 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+services:
+  http:
+    ProjectService:
+      base-path: /project
+      auth: true 
+      endpoints: 
+        run:
+          docs: Trigger a run of the latest published version of a project.
+          path: /{projectId}/run
+          path-parameters:
+            projectId: 
+              type: string 
+              docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
+          method: POST 
+          request: RunProjectRequest
+          response: RunProjectResponse
+        
+        getRunStatus:
+          docs: Get the status of a project run.
+          path: /{projectId}/run/{runId}
+          path-parameters:
+            projectId: string 
+            runId: string 
+          method: GET 
+          response: RunProjectResponse
+
+        cancelRun: 
+          docs: Cancel a project run.
+          path: /{projectId}/run/{runId}
+          path-parameters:
+            projectId: 
+              type: string
+              docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
+            runId: 
+              type: string
+              docs: Unique ID for a run of a Hex project. This ID is part of the response returned by the RunProject endpoint. The GetProjectRuns endpoint can also be used to find the specific runs for a project.
+          method: DELETE 
+
+        getProjectRuns:
+          docs: Get the status of the API-triggered runs of a project.
+          path: /{projectId}/runs
+          path-parameters:
+            projectId: 
+              type: string
+              docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
+          response: ProjectRunsResponse
+types:
+  RunProjectRequest:
+    properties:
+      inputParams:
+        docs: |
+          Optionally specify input parameters for this project run. These should be structured as a dictionary of key/value pairs, where the key name matches the name of the variable in the Hex project.
+          Only parameters that are added to the published app can be set via this request parameter. Any additional inputs will be ignored.
+          If no input parameters are provided, the project will be run with the default input values. Note that if input parameters are provided, this run will not be able to update the cached values for the project, and the updateCache setting (below) will be ignored.
+        type: InputParameters
+
+  InputParameters: 
+    properties:
+      text_input_1: string 
+      numeric_input_1: integer 
+  
+  RunProjectResponse: 
+    properties:
+      projectId: string 
+      runId: string 
+      runUrl: string 
+      runStatusUrl: string 
+      traceId: string
+  
+  ProjectRunsResponse: 
+    properties:
+      runs: 
+        type: list<ProjectStatusResponsePayload>
+        docs: Array of run status payloads in the same format returned by the GetRunStatus endpoint
+      nextPage: 
+        type: string 
+        docs: URL to fetch the next page of results for a paginated API request
+      previousPage:
+        type: string 
+        docs: URL to fetch the next page of results for a paginated API request
+      traceId: 
+        type: string 
+        docs: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
+
+  ProjectStatusResponsePayload: 
+    properties:
+      projectId: 
+        type: string 
+        docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
+      runId: 
+        type: uuid  
+        docs: Unique ID for a run of a Hex project
+      runUrl: 
+        type: string
+        docs: URL to view the current progress of the project run in the Hex UI
+      status: 
+        type: ProjectRunStatus
+        docs: Current status of a project run
+      startTime:
+        type: datetime 
+        docs: UTC timestamp of when the project run started
+      endTime:
+        type: datetime
+        docs: UTC timestamp of when the project run ended
+      elapsedTime:
+        type: double
+        docs: Total elapsed time for the project run in milliseconds
+      traceId: 
+        type: string
+        docs: A unique identifier for this API request. The Hex Support team may request this value when debugging an issue.
+
+  ProjectRunStatus:
+    enum:
+      - PENDING
+      - RUNNING
+      - ERRORED
+      - COMPLETED
+      - KILLED
+      - UNABLE_TO_ALLOCATE_KERNEL
+      

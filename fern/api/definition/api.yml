@@ -2,9 +2,8 @@ name: api
 auth: bearer
 environments:
   Production:
-    url: 
-    docs:
-  Sandbox:
-    url:
-    docs:
+    url: https://app.hex.tech/api/v1
+    docs: | 
+      For most Hex users. 
+      Single-tenant app users should replace the app.hex.tech part of this URL with the URL they use to access Hex (e.g. atreides.hex.tech).
 default-environment: Production
