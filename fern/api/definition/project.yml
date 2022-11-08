@@ -11,7 +11,7 @@ services:
           path: /{projectId}/run
           path-parameters:
             projectId: 
-              type: string 
+              type: uuid 
               docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
           method: POST 
           request: RunProjectRequest
@@ -21,8 +21,12 @@ services:
           docs: Get the status of a project run.
           path: /{projectId}/run/{runId}
           path-parameters:
-            projectId: string 
-            runId: string 
+            projectId: 
+              type: uuid 
+              docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
+            runId: 
+              type: uuid
+              docs: Unique ID for a run of a Hex project. This ID is part of the response returned by the RunProject endpoint. The GetProjectRuns endpoint can also be used to find the specific runs for a project.
           method: GET 
           response: RunProjectResponse
 
@@ -31,10 +35,10 @@ services:
           path: /{projectId}/run/{runId}
           path-parameters:
             projectId: 
-              type: string
+              type: uuid
               docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
             runId: 
-              type: string
+              type: uuid
               docs: Unique ID for a run of a Hex project. This ID is part of the response returned by the RunProject endpoint. The GetProjectRuns endpoint can also be used to find the specific runs for a project.
           method: DELETE 
 
@@ -43,7 +47,7 @@ services:
           path: /{projectId}/runs
           path-parameters:
             projectId: 
-              type: string
+              type: uuid
               docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
           response: ProjectRunsResponse
 types:
@@ -63,8 +67,8 @@ types:
   
   RunProjectResponse: 
     properties:
-      projectId: string 
-      runId: string 
+      projectId: uuid 
+      runId: uuid 
       runUrl: string 
       runStatusUrl: string 
       traceId: string
@@ -87,7 +91,7 @@ types:
   ProjectStatusResponsePayload: 
     properties:
       projectId: 
-        type: string 
+        type: uuid 
         docs: Unique ID for a Hex project. This can be found in the Variables side bar of the Logic View of a project, or by visiting the Project, and copying the UUID after hex in the URL.
       runId: 
         type: uuid  
