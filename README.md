@@ -3,8 +3,6 @@
 Tagging a release on this repository will update the:
 
 - [TypeScript SDK repo](https://github.com/fern-hex/hex-node)
-- [Java SDK repo](https://github.com/fern-hex/hex-java)
-- [OpenAPI description repo](https://github.com/fern-hex/hex-openapi)
 - [Postman collection repo](https://github.com/fern-hex/hex-postman)
 - _More SDKs to come..._
 
