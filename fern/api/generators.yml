@@ -24,7 +24,7 @@ release:
 #       repository: fern-hex/hex-openapi
       
   - name: fernapi/fern-postman
-    version: 0.0.25
+    version: 0.0.28
     publishing:
       postman:
         api-key: ${FERN_POSTMAN_API_KEY}
